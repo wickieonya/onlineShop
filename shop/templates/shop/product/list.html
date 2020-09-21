@@ -1,0 +1,44 @@
+{% extends "shop/base.html" %}
+{% load static %}
+{% block title %}
+    {% if category %}{{ category.name }}{% else %}Products{% endif %}
+{% endblock %}
+{% block content %}
+    <div class="bg-orange-600 text-orange-200 p-5">
+        <h3 class="text-4xl">Categories</h3>
+        <ul>
+            <li {% if not category %}class="text-orange-800"{% endif %}>
+                <a href="{% url "shop:product_list" %}" class="hover:text-orange-500 hover:text-4xl text-lg">All</a>
+            </li>
+            {% for c in categories %}
+                <li {% if category.slug == c.slug %}class="text-orange-800" {% endif %}>
+                    <a href="{{ c.get_absolute_url }}"
+                       class="hover:text-orange-500 hover:text-4xl text-md capitalize">{{ c.name }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="bg-teal-600 text-teal-200 p-10">
+        <h1 class="text-2xl capitalize">{% if category %}{{ category.name }}{% else %}Products {% endif %}</h1>
+        <div class="grid gap-4 grid-cols-3">
+            {% for product in products %}
+                <div class="bg-teal-100 rounded-t-lg">
+                    <div class="bg-white rounded-lg shadow-lg h-full w-full">
+                        <img class="rounded-t-lg" src="
+
+                                {% if product.image %}{{ product.image.url }}{% else %}{% static "img/no_image.png" %}{% endif %}">
+                        <div class="p-6">
+                            <h2 class="font-bold mb-2 text-2xl text-teal-800">
+                                <a href="{{ product.get_absolute_url }}" class="hover:text-teal-200">
+                                    {{ product.name }}
+                                </a>
+                            </h2>
+                            <p class="text-teal-600 mb-2"> ${{ product.price }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %} My shop {% endblock %}</title>
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+    {#    <link rel="stylesheet" href="{% static "css/base.css" %}">#}
+</head>
+<body class="bg-gray-300">
+<div id="header" class="bg-orange-900 h-10">
+    <a href="/" class="text-orange-200 font-bold text-xl m-2 p-2">My shop</a>
+</div>
+<div>
+    <div class="bg-gray-600 flex justify-center items-center">
+        <h2 class="text-4xl text-gray-200"> Your cart is empty.</h2>
+    </div>
+    <div class="">
+        {% block content %}
+
+        {% endblock %}
+    </div>
+</div>
+</body>
+</html>
