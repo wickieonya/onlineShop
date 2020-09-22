@@ -1,0 +1,61 @@
+{% extends "shop/base.html" %}
+{% block title %}
+    Checkout
+{% endblock %}
+{% block content %}
+    <div class="container mx-auto px-4 bg-orange-100 text-orange-600">
+        <h1 class="text-3xl font-bold text-center mt-4 text-orange-700">Checkout</h1>
+        <div class="md:flex">
+            <div class="p-4 m-2">
+                <h3 class="font-bold text-lg italic">Your order</h3>
+                <ul>
+                    {% for item in cart %}
+                        <li class="my-2 text-sm">
+                            {{ item.quantity }} x {{ item.product.name }}
+                            <span class="font-bold">${{ item.total_price }}</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+                <p class="text-lg font-bold">Total: ${{ cart.get_total_price }}</p>
+            </div>
+            <div class="w-3/4 p-4 m-2">
+                <form method="post">
+                    {{ form.non_field_errors }}
+                    {{ form }}
+                    <input
+                            type="submit"
+                            value="Place order"
+                            class="mt-4 py-2 px-4 bg-orange-600 hover:bg-orange-500 text-orange-100 rounded transition duration-300"
+                    >
+                    {% csrf_token %}
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block domready %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function (event) {
+            const labels = document.getElementsByTagName('label');
+            const inputsIds = [
+                'id_first_name', 'id_last_name', 'id_email', 'id_address', 'id_postal_code', 'id_city'
+            ];
+            const inputElements = [];
+            inputsIds.forEach(inputId => inputElements.push(document.getElementById(inputId)));
+            const inputClassNames = 'border-2 border-orange-200 p-2 rounded w-full focus:border-orange-400 focus:outline-none'.split(' ');
+            const labelClassNames = 'block mb-2 text-lg text-orange-600'.split(' ');
+            labelClassNames.forEach(className => {
+                for (let i = 0; i < labels.length; i++) {
+                    labels[i].classList.add(className);
+                }
+            });
+            inputClassNames.forEach(className => {
+                for (let i = 0; i < inputElements.length; i++) {
+                    inputElements[i].classList.add(className);
+                }
+            });
+
+        });
+
+    </script>
+{% endblock %}
