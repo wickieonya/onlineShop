@@ -4,19 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %} My shop {% endblock %}</title>
-    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
-    {#    <link rel="stylesheet" href="{% static "css/base.css" %}">#}
+    <link rel="stylesheet" href="{% static "css/base.css" %}">
 </head>
 <body class="bg-gray-300">
 <div id="header" class="bg-orange-900 h-10">
     <a href="/" class="text-orange-200 font-bold text-xl m-2 p-2">My shop</a>
 </div>
 <div>
-    <div class="text-xl text-right py-4">
+    <div class="text-xl font-semibold text-right py-4">
         {% with total_items=cart|length %}
             {% if total_items > 0 %}
                 Your cart:
-                <a href="{% url "cart:cart_detail" %}" class="px-2 hover:text-orange-100 hover:bg-orange-600">
+                <a href="{% url "cart:cart_detail" %}" class="px-2 text-orange-600">
                     {{ total_items }} item{{ total_items|pluralize }},
                     ${{ cart.get_total_price }}
                 </a>
@@ -29,7 +28,6 @@
         {% block content %}{% endblock %}
     </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function (event) {
         let selectElements = document.querySelectorAll('select');
