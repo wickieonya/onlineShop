@@ -1,9 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>IoT Appliances and Accessories onlineShop</title>
-</head>
 <body class="bg-orange-100 border-2 border-orange-200 rounded-lg text-orange-600 p-4">
 <h1 class="text-3xl font-bold mx-auto">IoT Appliances and Accessories onlineShop</h1>
 <p class="text-lg font-semibold mb-2">
@@ -44,8 +40,23 @@
     </tr>
     </tbody>
 </table>
-<button class="{% if order.paid %}bg-orange-100{% else %}bg-orange-600{% endif %} uppercase transform rotate-45 text-orange-600 font-bold px-4 py-2 mt-4 rounded-lg border-2 border-orange-200 tracking-widest">
+<button
+        class="
+{% if order.paid %}bg-orange-100 text-orange-600 border-2 border-orange-200{% else %}bg-orange-600 text-orange-100{% endif %}
+uppercase transform rotate-45  font-bold px-4 py-2 mt-4 rounded-lg tracking-widest"
+>
     {% if order.paid %}Paid{% else %}Pending payment{% endif %}
 </button>
+<br>
+{% if not order.paid %}
+    <div class="py-2">
+        <a href="{% url "payment:process" %}">Pay ${{ order.get_total_cost }} </a>now to get started with your
+        order
+    </div>
+{% endif %}
 </body>
+<head>
+    <meta charset="UTF-8">
+    <title>IoT Appliances and Accessories onlineShop</title>
+</head>
 </html>
