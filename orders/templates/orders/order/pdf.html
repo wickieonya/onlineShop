@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>IoT Appliances and Accessories onlineShop</title>
+</head>
+<body class="bg-orange-100 border-2 border-orange-200 rounded-lg text-orange-600 p-4">
+<h1 class="text-3xl font-bold mx-auto">IoT Appliances and Accessories onlineShop</h1>
+<p class="text-lg font-semibold mb-2">
+    Invoice no. #{{ order.id }} <br>
+    <span class="text-sm text-orange-500">{{ order.created|date:"M d, Y" }}</span>
+</p>
+
+<h3 class="text-2xl font-semibold uppercase mb-0">Bill to</h3>
+<p class="text-lg font-medium py-2">
+    {{ order.first_name }} {{ order.last_name }} <br>
+    {{ order.email }} <br>
+    {{ order.address }} <br>
+    {{ order.postal_code }}, {{ order.city }}
+</p>
+
+<h3 class="text-2xl font-semibold uppercase">Items bought</h3>
+<table class="border border-orange-100 py-2">
+    <thead>
+    <tr>
+        <th class="">Product</th>
+        <th class="">Price</th>
+        <th class="">Quantity</th>
+        <th class="">Cost</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for item in order.items.all %}
+        <tr class="row{% cycle "1" "2" %} text-sm">
+            <td class="p-2">{{ item.product.name }}</td>
+            <td class="p-2">${{ item.price }}</td>
+            <td class="p-2">{{ item.quantity }} piece(s)</td>
+            <td class="p-2">${{ item.get_cost }}</td>
+        </tr>
+    {% endfor %}
+    <tr class="font-bold italic px-2 py-4">
+        <td colspan="3">Total</td>
+        <td>${{ order.get_total_cost }}</td>
+    </tr>
+    </tbody>
+</table>
+<button class="{% if order.paid %}bg-orange-500{% else %}bg-orange-200{% endif %} text-white font-bold py-2 px-4 mt-4 rounded">
+    {% if order.paid %}Paid{% else %}Pending payment{% endif %}
+</button>
+</body>
+</html>
