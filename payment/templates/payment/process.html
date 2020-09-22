@@ -1,0 +1,98 @@
+{% extends "shop/base.html" %}
+{% block title %}Pay by credit card{% endblock %}
+{% block content %}
+    <div class="container mx-auto bg-orange-100 text-orange-600 p-4 md:w-1/3">
+        <h1 class="text-3xl font-bold">Pay by credit card</h1>
+        <form method="post" class="p-4" id="payment">
+            <label
+                    for="card-number"
+                    class="text-lg block mb-2"
+            >
+                Card Number
+            </label>
+            <div
+                    id="card-number"
+                    class="placeholder-orange-400 border border-orange-500 rounded-md inline-block py-2 px-3 h-10 w-full text-orange-600 tracking-widest focus:outline-none"
+            ></div>
+            <label
+                    for="cvv"
+                    class="text-lg block mb-2"
+            >
+                CVV
+            </label>
+            <div
+                    id="cvv"
+                    class="placeholder-orange-400 border border-orange-500 rounded-md inline-block py-2 px-3 h-10 w-full text-orange-600 tracking-widest focus:outline-none"
+            >
+            </div>
+            <label
+                    for="expiration-date"
+                    class="text-lg block mb-2"
+            >
+                Expiration Date
+            </label>
+            <div id="expiration-date" data-braintree-name="expirationDate"
+                 class="placeholder-orange-400 border border-orange-500 rounded-md inline-block py-2 px-3 h-10 w-full text-orange-600 tracking-widest focus:outline-none"
+            ></div>
+            <input
+                    type="hidden"
+                    id="nonce"
+                    name="payment_method_nonce"
+                    value=""
+            >
+            {% csrf_token %}
+            <input
+                    type="submit"
+                    value="Pay ${{ order.get_total_cost }}"
+                    class="block mt-4 px-4 py-2 bg-orange-600 hover:bg-orange-500 text-orange-100 rounded-md text-center transition duration-300 shadow-md font-semibold"
+            >
+        </form>
+    </div>
+    <!-- includes the Braintree JS client SDK -->
+    <script src="https://js.braintreegateway.com/web/3.44.2/js/client.min.js"></script>
+    <script src="https://js.braintreegateway.com/web/3.44.2/js/hosted-fields.min.js"></script>
+    <script>
+        var form = document.querySelector('#payment');
+        var submit = document.querySelector('input[type="submit"]');
+        braintree.client.create({
+            authorization: '{{ client_token }}'
+        }, function (clientErr, clientInstance) {
+            if (clientErr) {
+                console.error(clientErr);
+                return;
+            }
+            braintree.hostedFields.create({
+                client: clientInstance,
+                styles: {
+                    'input': {'font-size': '13px'},
+                    'input.invalid': {'color': 'red'},
+                    'input.valid': {'color': 'green'}
+                },
+                fields: {
+                    number: {selector: '#card-number'},
+                    cvv: {selector: '#cvv'},
+                    expirationDate: {selector: '#expiration-date', placeholder: 'MM / YY'}
+                }
+            }, function (hostedFieldsErr, hostedFieldsInstance) {
+                if (hostedFieldsErr) {
+                    console.error(hostedFieldsErr);
+                    return;
+                }
+                submit.removeAttribute('disabled');
+                form.addEventListener('submit', function (event) {
+                    event.preventDefault();
+                    hostedFieldsInstance.tokenize(function (tokenizeErr, payload) {
+                        if (tokenizeErr) {
+                            console.error(tokenizeErr);
+                            return;
+                        }
+                        // set nonce to send to the server
+                        document.getElementById('nonce').value = payload.nonce;
+                        // submit form
+                        document.getElementById('payment').submit();
+                    });
+                }, false);
+            });
+        });
+    </script>
+{% endblock %}
