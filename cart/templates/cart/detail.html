@@ -28,10 +28,6 @@
 
 
 
-
-
-
-
                                         {% if product.image %}{{ product.image.url }} {% else %}{% static "img/no_image.png" %}{% endif %}">
                             </a>
                         </td>
@@ -64,19 +60,51 @@
                     </tr>
                 {% endwith %}
             {% endfor %}
-            <tr class="bg-orange-200 text-orange-600">
+            {% if cart.coupon %}
+                <tr class="text-orange-600">
+                    <td class="border px-4 py-2 text-lg">Subtotal</td>
+                    <td class="border px-4 py-2" colspan="4"></td>
+                    <td class="border px-4 py-2 text-2xl font-bold">${{ cart.get_total_price|floatformat:2 }}</td>
+                </tr>
+                <tr class="text-orange-600">
+                    <td class="text-sm">
+                        "{{ cart.coupon.code }}" coupon
+                        ({{ cart.coupon.discount }}% off)
+                    </td>
+                    <td class="border px-4 py-2" colspan="4"></td>
+                    <td class="border px-4 py-2 text-2xl font-bold">- ${{ cart.get_discount|floatformat:2 }}</td>
+                </tr>
+            {% endif %}
+            <tr class="bg-orange-200 text-orange-600 italic font-semibold">
                 <td class="border px-4 py-2 text-xl">Total</td>
                 <td class="border px-4 py-2" colspan="4"></td>
-                <td class="border px-4 py-2 text-2xl font-bold">${{ cart.get_total_price }}</td>
+                <td class="border px-4 py-2 text-2xl font-bold">
+                    ${{ cart.get_total_price_after_discount|floatformat:2 }}</td>
             </tr>
             </tbody>
         </table>
-        <div class="py-4">
+        <div class="py-4 md:w-2/5">
+            <p class="text-3xl text-orange-600">Apply a coupon</p>
+            <form action="{% url "coupons:apply" %}" method="post">
+                {{ coupon_apply_form }}
+                <input
+                        type="submit"
+                        value="Apply"
+                        class="mt-4 py-2 px-4 bg-orange-600 hover:bg-orange-500 text-orange-100 rounded transition duration-300"
+                >
+                {% csrf_token %}
+            </form>
+        </div>
+        <div class="py-4 text-right">
             <a href="{% url "shop:product_list" %}"
-               class="py-2 px-4 bg-orange-600 hover:bg-orange-500 text-orange-100 rounded transition duration-300">Continue
-                shopping</a>
+               class="py-2 px-4 bg-orange-600 hover:bg-orange-500 text-orange-100 rounded transition duration-300"
+            >
+                Continue shopping</a>
             <a href="{% url "orders:order_create" %}"
-               class="py-2 px-4 bg-green-600 hover:bg-green-500 text-green-100 rounded transition duration-300">Checkout</a>
+               class="py-2 px-4 bg-green-600 hover:bg-green-500 text-green-100 rounded transition duration-300"
+            >
+                Checkout
+            </a>
         </div>
     </div>
 {% endblock %}

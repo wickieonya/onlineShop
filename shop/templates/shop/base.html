@@ -38,6 +38,26 @@
                 element.classList.add(classNames[i]);
             }
         });
+        const inputClassNames = 'border-2 border-orange-200 p-2 rounded w-full focus:border-orange-400 focus:outline-none'.split(' ');
+        const labelClassNames = 'block mb-2 text-lg text-orange-600'.split(' ');
+        const labels = document.getElementsByTagName('label');
+        const inputsIds = [
+            'id_first_name', 'id_last_name', 'id_email', 'id_address', 'id_postal_code', 'id_city', 'id_code',
+        ];
+        const inputElements = [];
+        inputsIds.forEach(inputId => inputElements.push(document.getElementById(inputId)));
+        labelClassNames.forEach(className => {
+            for (let i = 0; i < labels.length; i++) {
+                labels[i].classList.add(className);
+            }
+        });
+        inputClassNames.forEach(className => {
+            for (let i = 0; i < inputElements.length; i++) {
+                if (inputElements[i]) {
+                    inputElements[i].classList.add(className);
+                }
+            }
+        });
     });
 </script>
 {% block domready %}{% endblock %}

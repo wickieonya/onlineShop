@@ -48,7 +48,22 @@ The online shop will enable clients to browse products, add them to the cart, ap
     - extend admin site with custom views
 - Generate PDF invoices dynamically
     - install WeasyPrint
+        - GTK error that keeps coming up
+        - `WHERE libcairo-2.dll` 
+        - It should respond with the path\to\recently\installed\gtk\binaries\libcairo-2.dll, for example:
+        `C:\Program Files\GTK2-Runtime Win64\bin\libcairo-2.dll`
+        - The proper folder name of interes is `C:\Program Files\GTK2-Runtime Win64\bin`
+        - Execute the following command to set it to the environment
+            - `SET PROPER_GTK_FOLDER=C:\Program Files\GTK2-Runtime Win64\bin`
+            - `SET PATH=%PROPER_GTK_FOLDER%;%PATH%`
+           This puts the appropriate GTK at the beginning of the `PATH` and its files are the first found when WeasyPrint requires them.
     - generate a pdf template
     - render pdf files
     - send pdf files by email
     
+### Adding coupon system to online shop
+- Create coupon system to apply discounts
+- Add internationalization
+- Use Rosetta to manage translations
+- Translate models using `django-parler`
+- Build product recommendation engine

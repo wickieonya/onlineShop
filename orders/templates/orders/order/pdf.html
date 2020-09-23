@@ -40,6 +40,10 @@
     </tr>
     </tbody>
 </table>
+{% if order.coupon %}
+    <span class="text-sm italic uppercase">Applied {{ order.coupon }} {{ order.discount }}% off</span>
+{% endif %}
+<br>
 <button
         class="
 {% if order.paid %}bg-orange-100 text-orange-600 border-2 border-orange-200{% else %}bg-orange-600 text-orange-100{% endif %}
