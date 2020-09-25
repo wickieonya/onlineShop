@@ -63,7 +63,6 @@ The online shop will enable clients to browse products, add them to the cart, ap
     
 ### Adding coupon system to online shop
 - Create coupon system to apply discounts
-- Add internationalization
-- Use Rosetta to manage translations
-- Translate models using `django-parler`
-- Build product recommendation engine
+    - Build the coupon model
+    - Apply coupon to the shopping cart
+    - Apply coupons to orders
